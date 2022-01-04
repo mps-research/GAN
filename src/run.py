@@ -16,9 +16,6 @@ from config import nets, config
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 
-print("Device", device)
-
-
 def train(netG, netD, lrG, lrD, default_batch_size, n_epochs, name):
     transform = transforms.Compose([
         transforms.ToTensor(),
@@ -27,9 +24,6 @@ def train(netG, netD, lrG, lrD, default_batch_size, n_epochs, name):
 
     dataset = MNIST('/data', download=True, transform=transform)
     data_loader = DataLoader(dataset, batch_size=default_batch_size, shuffle=True)
-
-    # netG = Generator().to(device)
-    # netD = Discriminator().to(device)
 
     criterion = nn.BCELoss()
 
@@ -103,8 +97,11 @@ def train(netG, netD, lrG, lrD, default_batch_size, n_epochs, name):
 def trainable(config):
     netG = Generator(**nets[config['netG']]).to(device)
     netD = Discriminator(**nets[config['netD']]).to(device)
-    name = tune.get_trial_name() + '--' + '--'.join([f'{key}-{value}' for key, value in config.items()])
-    train(netG, netD, config['lrG'], config['lrD'], config['batch_size'], config['n_epochs'], name)
+    name = tune.get_trial_name() + \
+           '--' + \
+           '--'.join([f'{key}-{value}' for key, value in config.items()])
+    train(netG, netD, config['lrG'], config['lrD'],
+          config['batch_size'], config['n_epochs'], name)
 
 
 if __name__ == '__main__':
