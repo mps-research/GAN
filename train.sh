@@ -6,6 +6,5 @@ docker run \
     -v $(pwd)/logs:/logs \
     -v $(pwd)/models:/models \
     -p 6006:6006 \
-    --gpus all \
-    --shm-size 3G \
+    --gpus '"device=1"' \
     -it gan python3 run.py --train
