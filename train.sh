@@ -7,4 +7,4 @@ docker run \
     -v $(pwd)/models:/models \
     -p 6006:6006 \
     --gpus '"device=1"' \
-    -it gan python3 run.py --train
+    -it gan python3 train.py

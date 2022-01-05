@@ -133,42 +133,32 @@ small_netD = {
         {'in_features': 784, 'out_features': 128, 'activation_func': nn.LeakyReLU(0.2)},
         {'in_features': 128, 'out_features': 1, 'activation_func': nn.Sigmoid()}
     ]
-}  
+}
 
 
-nets = {
+netGs = {
     'large_netG_normalized': large_netG_normalized,
     'large_netG': large_netG,
     'medium_netG_normalized': medium_netG_normalized,
     'medium_netG': medium_netG,
     'small_netG_normalized': small_netG_normalized,
     'small_netG': small_netG,
+}
+
+
+netDs = {
     'large_netD_normalized': large_netD_normalized,
     'large_netD': large_netD,
     'medium_netD_normalized': medium_netD_normalized,
     'medium_netD': medium_netD,
     'small_netD_normalized': small_netD_normalized,
-    'small_netD': small_netD
+    'small_netD': small_netD,
 }
 
 
 config = {
-    'netG': tune.grid_search([
-        'large_netG_normalized',
-        'large_netG',
-        'medium_netG_normalized',
-        'medium_netG',
-        'small_netG_normalized',
-        'small_netG'
-    ]),
-    'netD': tune.grid_search([
-        'large_netD_normalized',
-        'large_netD',
-        'medium_netD_normalized',
-        'medium_netD',
-        'small_netD_normalized',
-        'small_netD'
-    ]),
+    'netG': tune.grid_search(list(netGs.keys())),
+    'netD': tune.grid_search(list(netDs.keys())),
     'batch_size': 128,
     'n_epochs': 200,
     'lrG': tune.grid_search([4e-3, 4e-4]),
